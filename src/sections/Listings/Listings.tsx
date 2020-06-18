@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 
 import { server } from "../../lib/api";
 import {
@@ -39,6 +39,10 @@ interface Props {
 export const Listings = ({ title }: Props) => {
   const [listings, setListings] = useState<Listing[]>([]);
 
+  useEffect(() => {
+    fetchListings();
+  }, []);
+
   const fetchListings = async () => {
     const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
     setListings(data.listings);
@@ -68,7 +72,6 @@ export const Listings = ({ title }: Props) => {
   return (
     <div>
       <h2>{title}</h2>
-      <button onClick={fetchListings}>Query Listings!</button>
       {listingsList}
     </div>
   );
