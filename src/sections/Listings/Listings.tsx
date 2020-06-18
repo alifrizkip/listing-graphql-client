@@ -1,11 +1,10 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC } from "react";
 
-import { server } from "../../lib/api";
+import { server, useQuery } from "../../lib/api";
 import {
   ListingsData,
   DeleteListingData,
   DeleteListingVariables,
-  Listing,
 } from "./types";
 
 const LISTINGS = `
@@ -37,16 +36,7 @@ interface Props {
 }
 
 export const Listings = ({ title }: Props) => {
-  const [listings, setListings] = useState<Listing[]>([]);
-
-  useEffect(() => {
-    fetchListings();
-  }, []);
-
-  const fetchListings = async () => {
-    const { data } = await server.fetch<ListingsData>({ query: LISTINGS });
-    setListings(data.listings);
-  };
+  const { data } = useQuery<ListingsData>(LISTINGS);
 
   const deleteListing = async (id: string) => {
     await server.fetch<DeleteListingData, DeleteListingVariables>({
@@ -55,9 +45,9 @@ export const Listings = ({ title }: Props) => {
         id,
       },
     });
-    fetchListings();
   };
 
+  const listings = data ? data.listings : [];
   const listingsList = (
     <ul>
       {listings.map((listing) => (
