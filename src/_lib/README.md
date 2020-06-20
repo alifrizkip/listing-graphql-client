@@ -1,0 +1,1 @@
+This lib folder unused after use useQuery,useMutation from "react-apollo"

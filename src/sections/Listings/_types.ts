@@ -1,3 +1,5 @@
+// @note
+// this file unused after using apollo schema code generator
 export interface Listing {
   id: string;
   title: string;
