@@ -9,6 +9,7 @@ import {
   DeleteListing as DeleteListingData,
   DeleteListingVariables,
 } from "./__generated__/DeleteListing";
+import { GenerateListings as GenerateListingsData } from "./__generated__/GenerateListings";
 
 import { ListingsSkeleton } from "./components";
 
@@ -38,19 +39,42 @@ const DELETE_LISTING = gql`
   }
 `;
 
+const GENERATE_LISTINGS = gql`
+  mutation GenerateListings {
+    generateListings
+  }
+`;
+
 interface Props {
   title: string;
 }
 
 export const Listings = ({ title }: Props) => {
   const { data, loading, error, refetch } = useQuery<ListingsData>(LISTINGS);
+
   const [
     deleteListing,
     { error: deleteListingError, loading: deleteListingLoading },
-  ] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING);
+  ] = useMutation<DeleteListingData, DeleteListingVariables>(DELETE_LISTING, {
+    onError(error) {
+      console.error(error);
+    },
+  });
+
+  const [generateListings, { error: generateListingsError }] = useMutation<
+    GenerateListingsData
+  >(GENERATE_LISTINGS, {
+    onError(error) {
+      console.error(error);
+    },
+  });
 
   const handleDeleteListing = async (id: string) => {
     await deleteListing({ variables: { id } });
+    refetch();
+  };
+  const handleGenerateListings = async () => {
+    await generateListings();
     refetch();
   };
 
@@ -92,6 +116,29 @@ export const Listings = ({ title }: Props) => {
     return (
       <div className="listings">
         <ListingsSkeleton title={title} error />
+      </div>
+    );
+  }
+
+  const generateListingsErrorAlert = generateListingsError ? (
+    <Alert
+      type="error"
+      message="Whoops! Generate listing failed. Please try again."
+      className="listings__alert"
+    />
+  ) : null;
+
+  if (!listings.length) {
+    return (
+      <div className="listings">
+        <Button
+          type="primary"
+          onClick={() => handleGenerateListings()}
+          style={{ marginBottom: "20px" }}
+        >
+          Generate Listing!
+        </Button>
+        {generateListingsErrorAlert}
       </div>
     );
   }
