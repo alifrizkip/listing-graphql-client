@@ -8,14 +8,15 @@ import * as serviceWorker from "./serviceWorker";
 
 import { Listings } from "./sections";
 
+const API_URL = `${process.env.REACT_APP_API_BASE_URL}${process.env.REACT_APP_API_BASE_URL_PATH}`;
 const client = new ApolloClient({
-  uri: "/api",
+  uri: API_URL,
 });
 
 render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <Listings title="TinyHouse Listings Props" />
+      <Listings title="TinyHouse Listings" />
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
