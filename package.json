@@ -26,8 +26,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "codegen:schema": "npx apollo client:download-schema --endpoint=http://localhost:9000/api",
-    "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript"
+    "codegen:schema": "npx apollo client:download-schema --endpoint=https://listing-graphql-server.herokuapp.com/api",
+    "codegen:generate": "npx apollo client:codegen --localSchemaFile=schema.json --includes=src/**/*.tsx --target=typescript",
+    "postinstall": "npm run codegen:schema && npm run codegen:generate && npm run build"
   },
   "eslintConfig": {
     "extends": "react-app"
