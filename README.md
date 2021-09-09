@@ -1,5 +1,7 @@
 ## Listing GraphQL Client
-Simple listing graphql client [here](https://github.com/alifrizkip/listing-graphql-client.git)
+Simple listing graphql client.
+  - [Demo Backend](https://listing-graphql-server.herokuapp.com/api)
+  - [Demo Frontend](https://listing-graphql-client.netlify.app/)
 
 ## Quick Start
 
